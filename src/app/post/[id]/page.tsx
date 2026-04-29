@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { commentPost, getPostById, retweetPost, toggleLikePost,} from "@/api/api";
-import { PostT } from "@/types/Post";
+import { PostT } from "@/app/types/Post";
 
 const PostDetailPage = () => {
   const params = useParams();

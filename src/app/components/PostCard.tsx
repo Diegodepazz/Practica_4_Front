@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { PostT } from "@/types/Post";
+import { PostT } from "../types/Post";
 import { retweetPost, toggleLikePost } from "@/api/api";
 
 type Props = {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {AuthResponseT, HomeResponseT, PostT, ProfileResponseT,} from "@/types/Post";
+import { AuthResponseT, HomeResponseT, PostT, ProfileResponseT } from "@/app/types/Post";
 
 const api = axios.create({
   baseURL: "https://backend-p4-klvc.onrender.com",
@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  config.headers["x-nombre"] = "TU_NOMBRE_Y_APELLIDOS";
+  config.headers["x-nombre"] = "DIEGO DE PAZ GONZALEZ";
 
   if (token && token !== "undefined") {
     config.headers.Authorization = `Bearer ${token}`;

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPost, getHomePosts } from "@/api/api";
-import { PostT } from "@/types/Post";
+import { PostT } from "./types/Post";
 import PostCard from "./components/PostCard";
 import Paginador from "./components/Paginador";
 

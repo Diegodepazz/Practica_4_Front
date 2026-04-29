@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getMyProfile } from "@/api/api";
-import { PostT, UserT } from "@/types/Post";
-import PostCard from "@/components/PostCard";
+import { PostT, UserT } from "../types/Post";
+
+import PostCard from "../components/PostCard";
 
 const ProfilePage = () => {
   const router = useRouter();

@@ -44,9 +44,7 @@ La aplicación consume una API REST externa y permite a los usuarios registrarse
   - Username
   - Bio
   - Seguidores / Seguidos
-- Botón de seguir / dejar de seguir
 - Listado de posts del usuario
-- Paginación
 - Navegación al detalle de cada post
 
 ---
@@ -100,20 +98,18 @@ http://localhost:3000
 
 ## ESTRUCTURA DEL PROYECTO
 
-```
-/app
-  ├── page.tsx              → Home (timeline)
-  ├── post/[id]/           → Detalle de post
-  ├── profile/[id]/        → Perfil de usuario
-  ├── login/               → Login y registro
+/src
+  ├── app
+  │   ├── page.tsx              → Home (timeline)
+  │   ├── post/[id]/page.tsx    → Detalle de post
+  │   ├── profile/page.tsx      → Perfil del usuario
+  │   ├── login/page.tsx        → Login y registro
+  │   ├── components/           → Componentes reutilizables  
+  │   ├── types/                → Tipos de TypeScript  
+  │   ├── globals.css           → Estilos globales  
+  │   └── layout.tsx            → Layout general  
 
-/components                → Componentes reutilizables  
-/lib/api                  → Configuración y llamadas a la API  
-/types                    → Interfaces de TypeScript  
-/styles                   → Estilos globales  
-```
-
----
+/api/api.ts                     → Configuración y llamadas a la API
 
 ## FUNCIONAMIENTO
 
