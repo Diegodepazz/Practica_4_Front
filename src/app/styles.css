@@ -1,0 +1,13 @@
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.post p {
+  margin: 8px 0;
+}
+
+.caja button {
+  margin-left: 0;
+}

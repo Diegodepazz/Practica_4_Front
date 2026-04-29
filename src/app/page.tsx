@@ -2,33 +2,49 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createPost, getHomePosts } from "@/api/api";
-import { PostT } from "./types/Post";
+import api from "@/api/api";
 import PostCard from "./components/PostCard";
 import Paginador from "./components/Paginador";
 
-const HomePage = () => {
+export default function HomePage() {
   const router = useRouter();
 
-  const [posts, setPosts] = useState<PostT[]>([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [content, setContent] = useState("");
+  const [posts, setPosts] = useState<any[]>([]);
+  const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(5);
+  const [contenido, setContenido] = useState("");
+  const [cargando, setCargando] = useState(true);
 
-  const fetchPosts = async () => {
-    try {
-      setLoading(true);
-      const data = await getHomePosts(page);
+  const cargarPosts = () => {
+    setCargando(true);
 
-      setPosts(data.posts || []);
-      setTotalPages(data.totalPages || 1);
-    } catch (error) {
-      console.log(error);
-      alert("Error al cargar los posts");
-    } finally {
-      setLoading(false);
-    }
+    api
+      .get("/api/home?page=" + pagina)
+      .then((res) => {
+        console.log("RESPUESTA HOME:", res.data);
+
+        const datos =
+          res.data.posts ||
+          res.data.data ||
+          res.data.results ||
+          [];
+
+        setPosts(datos);
+
+        setTotalPaginas(
+          res.data.totalPages ||
+            res.data.totalPaginas ||
+            res.data.pages ||
+            5
+        );
+      })
+      .catch((err) => {
+        console.log(err.response?.data);
+        alert("Error al cargar los posts");
+      })
+      .finally(() => {
+        setCargando(false);
+      });
   };
 
   useEffect(() => {
@@ -39,57 +55,73 @@ const HomePage = () => {
       return;
     }
 
-    fetchPosts();
-  }, [page]);
+    cargarPosts();
+  }, [pagina]);
 
-  const handleCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!content.trim()) return;
-
-    try {
-      await createPost(content);
-      setContent("");
-      fetchPosts();
-    } catch (error) {
-      console.log(error);
-      alert("Error al crear el post");
+  const publicarPost = () => {
+    if (contenido.trim() === "") {
+      alert("Escribe algo");
+      return;
     }
+
+    api
+      .post("/api/posts", {
+        contenido: contenido,
+      })
+      .then(() => {
+        setContenido("");
+        setPagina(1);
+        cargarPosts();
+      })
+      .catch((err) => {
+        console.log(err.response?.data);
+        alert("Error al publicar");
+      });
   };
 
   return (
-    <section className="pageSection">
-      <h2 className="pageTitle">Últimos posts</h2>
+    <main>
+      <h1>Home</h1>
 
-      <form onSubmit={handleCreatePost} className="createPostForm">
-        <textarea
+      <div className="caja">
+        <input
           placeholder="¿Qué está pasando?"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={contenido}
+          onChange={(e) => setContenido(e.target.value)}
         />
 
-        <button type="submit">Publicar</button>
-      </form>
+        <button onClick={publicarPost}>Publicar</button>
+      </div>
 
-      {loading ? (
+      <h2>Últimos posts</h2>
+
+      <Paginador
+        pagina={pagina}
+        totalPaginas={totalPaginas}
+        setPagina={setPagina}
+      />
+
+      {cargando ? (
         <p>Cargando posts...</p>
       ) : (
         <>
-          <div className="postsList">
-            {posts.map((post, index) => (
-              <PostCard
-                key={post.id || (post as any)._id || index}
-                post={post}
-                refreshPosts={fetchPosts}
-              />
-            ))}
-          </div>
+          {posts.length === 0 && <p>No hay posts</p>}
 
-          <Paginador page={page} totalPages={totalPages} setPage={setPage} />
+          {posts.map((post, index) => (
+            <PostCard
+              key={post._id || post.id || index}
+              post={post}
+              refrescar={cargarPosts}
+            />
+          ))}
         </>
       )}
-    </section>
-  );
-};
 
-export default HomePage;
+      <Paginador
+        pagina={pagina}
+        totalPaginas={totalPaginas}
+        setPagina={setPagina}
+      />
+    </main>
+  );
+}

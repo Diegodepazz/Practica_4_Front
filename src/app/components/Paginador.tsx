@@ -1,30 +1,35 @@
+"use client";
+
 type Props = {
-  page: number;
-  totalPages: number;
-  setPage: (page: number) => void;
+  pagina: number;
+  totalPaginas: number;
+  setPagina: (pagina: number) => void;
 };
 
-const Paginador = ({ page, totalPages, setPage }: Props) => {
-  if (totalPages <= 1) return null;
-
+export default function Paginador({
+  pagina,
+  totalPaginas,
+  setPagina,
+}: Props) {
   return (
     <div className="paginador">
-      <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+      <button
+        disabled={pagina === 1}
+        onClick={() => setPagina(pagina - 1)}
+      >
         Anterior
       </button>
 
       <span>
-        Página {page} de {totalPages}
+        Página {pagina} de {totalPaginas}
       </span>
 
       <button
-        disabled={page === totalPages}
-        onClick={() => setPage(page + 1)}
+        disabled={pagina === totalPaginas}
+        onClick={() => setPagina(pagina + 1)}
       >
         Siguiente
       </button>
     </div>
   );
-};
-
-export default Paginador;
+}
