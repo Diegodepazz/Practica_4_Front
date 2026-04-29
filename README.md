@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FRONT | PRÁCTICA 4 | DIEGO DE PAZ GONZÁLEZ
 
-## Getting Started
+## DESCRIPCIÓN
 
-First, run the development server:
+En esta práctica se ha desarrollado una aplicación web utilizando **Next.js** que simula el funcionamiento de una red social tipo Twitter.
+
+La aplicación consume una API REST externa y permite a los usuarios registrarse, iniciar sesión, publicar posts, interactuar con ellos y visualizar perfiles de usuarios.
+
+---
+
+## FUNCIONALIDADES
+
+### Página principal (Home)
+
+- Listado de posts recientes (timeline)
+- Paginación de resultados
+- Creación de nuevos posts
+- Interacciones:
+  - Like
+  - Retweet
+- Navegación al detalle del post
+
+---
+
+### Detalle del post
+
+- Información completa del post:
+  - Contenido
+  - Autor
+  - Fecha de publicación
+  - Número de likes y retweets
+- Interacciones:
+  - Like
+  - Retweet
+- Comentarios:
+  - Listado de comentarios
+  - Formulario para añadir comentarios
+
+---
+
+### Página de perfil
+
+- Información del usuario:
+  - Username
+  - Bio
+  - Seguidores / Seguidos
+- Botón de seguir / dejar de seguir
+- Listado de posts del usuario
+- Paginación
+- Navegación al detalle de cada post
+
+---
+
+### Login / Registro
+
+- Login:
+  - Email
+  - Contraseña
+- Registro:
+  - Username
+  - Email
+  - Contraseña
+- Cambio dinámico entre formularios
+- Guardado del token JWT
+- Redirección automática a la home
+
+---
+
+## AUTENTICACIÓN Y API
+
+- Uso de **JWT (JSON Web Token)** para autenticación
+- Headers obligatorios en cada petición:
+  - `Authorization: Bearer <token>`
+  - `x-nombre: Diego de Paz González`
+- Redirección automática al login si no existe token
+
+---
+
+## INSTALACIÓN Y EJECUCIÓN
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+Ejecutar el proyecto:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir en el navegador:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ESTRUCTURA DEL PROYECTO
 
-To learn more about Next.js, take a look at the following resources:
+```
+/app
+  ├── page.tsx              → Home (timeline)
+  ├── post/[id]/           → Detalle de post
+  ├── profile/[id]/        → Perfil de usuario
+  ├── login/               → Login y registro
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+/components                → Componentes reutilizables  
+/lib/api                  → Configuración y llamadas a la API  
+/types                    → Interfaces de TypeScript  
+/styles                   → Estilos globales  
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## FUNCIONAMIENTO
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. El usuario se registra o inicia sesión.
+2. Se guarda el token JWT.
+3. En la página principal se cargan los posts desde la API con paginación.
+4. El usuario puede crear nuevos posts.
+5. Cada post permite dar like, retweet o acceder al detalle.
+6. En el detalle se pueden ver comentarios y añadir nuevos.
+7. En la página de perfil se muestran los datos del usuario y sus publicaciones.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## PROBLEMAS ENCONTRADOS Y SOLUCIONES
+
+- **Autenticación con token**
+  - Problema: errores al hacer peticiones sin token  
+  - Solución: control de autenticación y redirección al login  
+
+- **Headers obligatorios**
+  - Problema: la API no respondía correctamente  
+  - Solución: inclusión del header `x-nombre` en todas las peticiones  
+
+- **Datos anidados de la API**
+  - Problema: acceso incorrecto a propiedades  
+  - Solución: validación previa antes de renderizar  
+
+- **Paginación**
+  - Problema: no se cargaban todos los posts  
+  - Solución: implementación correcta de parámetros de paginación  
+
+- **Gestión del estado**
+  - Problema: inconsistencias entre componentes  
+  - Solución: elevación del estado al componente padre  
+
+---
+
+## CONCLUSIÓN
+
+Esta práctica ha permitido desarrollar una aplicación completa tipo red social utilizando **Next.js**, trabajando conceptos como:
+
+- Rutas dinámicas
+- Consumo de APIs REST
+- Autenticación con JWT
+- Componentes reutilizables
+- Gestión del estado en React
+
+Se ha conseguido replicar el comportamiento básico de una red social tipo Twitter integrando múltiples funcionalidades en una sola aplicación.
